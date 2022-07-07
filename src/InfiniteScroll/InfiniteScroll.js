@@ -46,6 +46,7 @@ const InfiniteScroll = () => {
         });
       };
   */
+
   return (
     <Layout>
       <header>
@@ -103,6 +104,12 @@ const InfiniteScroll = () => {
             비동기적으로 실행되며 가시성 구분 시 reflow 를 발생시키지 않습니다.
             여러모로 성능상 유리합니다.
           </li>
+          <li>
+            무한 스크롤은 페이지 하단 영역까지 스크롤될 경우 다른 컨텐츠를
+            새롭게 로딩해 페이지에 추가되는 방식입니다. 스크롤 액션 하나로 많은
+            양의 컨텐츠를 보여줄 수 있어 사용자 이탈을 막을 수 있는 장점이
+            있습니다.
+          </li>
         </ul>
       </aside>
       <h1>InfiniteScroll Example</h1>
@@ -134,7 +141,7 @@ const Layout = styled.div`
 
 const MovieLayout = styled.main`
   display: grid;
-  grid-template-columns: repeat(2, 300px);
+  grid-template-columns: repeat(1, 300px);
   grid-gap: 30px;
 `;
 
