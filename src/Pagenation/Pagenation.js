@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import PagenationBtn from "./PagenationBtn";
 
 const Pagenation = () => {
   const [posts, setPosts] = useState([]);
@@ -43,6 +44,14 @@ const Pagenation = () => {
           </article>
         ))}
       </main>
+      <footer>
+        <PagenationBtn
+          limit={limit}
+          total={posts.length}
+          setPage={setPage}
+          page={page}
+        />
+      </footer>
     </Layout>
   );
 };
