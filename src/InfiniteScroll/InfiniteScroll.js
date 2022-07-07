@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const API_KEY = "8f315c9787c0d2e3bdb126d07e5b94ac";
@@ -6,14 +6,35 @@ const GET_IMAGE = "http://image.tmdb.org/t/p/w500";
 
 const InfiniteScroll = () => {
   const [movies, setMovies] = useState([]);
+  const observerRef = useRef();
+  const boxRef = useRef();
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=1`
-    )
-      .then((res) => res.json())
-      .then((item) => setMovies(item.results));
+    getData();
   }, []);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(intersectionObserver);
+    boxRef.current && observerRef.current.observe(boxRef.current);
+  }, [movies]);
+
+  const intersectionObserver = (entires, intersection) => {
+    entires.forEach((entry) => {
+      if (entry.isIntersecting) {
+        intersection.unobserve(entry.target);
+        getData();
+        console.log("Loaded new items");
+      }
+    });
+  };
+
+  const getData = async () => {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=2`
+    );
+    const data = await response.json();
+    setMovies((prev) => [...prev, ...data.results]);
+  };
 
   // console.log(movies);
 
@@ -115,9 +136,9 @@ const InfiniteScroll = () => {
       <h1>InfiniteScroll Example</h1>
       <MovieLayout>
         {movies.length !== 0 &&
-          movies.map(({ id, poster_path, original_title, overview }) => {
+          movies.map(({ id, poster_path, original_title, overview }, index) => {
             return (
-              <Post key={id}>
+              <Post key={index} ref={boxRef}>
                 <Image src={`${GET_IMAGE}${poster_path}`} alt="영화포스터" />
                 <h4>{original_title}</h4>
                 <Overview>{overview}</Overview>
