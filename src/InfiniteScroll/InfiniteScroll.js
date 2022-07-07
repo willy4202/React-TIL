@@ -15,8 +15,37 @@ const InfiniteScroll = () => {
       .then((item) => setMovies(item.results));
   }, []);
 
-  console.log(movies);
+  // console.log(movies);
 
+  /*  무한스크롤 구현 시도 - 1 
+      let options = {
+        root: document.querySelector("#scrollArea"),
+        // 타겟 요소의 가시성을 확인할 때 사용되는 루트 요소입니다. 이것은 타겟 요소보다 상위 요소, 즉 요소의 조상 요소이어야 합니다.
+        // 설정하지 않거나 root 값을 null 로 주었을 때 기본 값으로 브라우저 뷰포트가 설정됩니다.
+        rootMargin: "0px",
+        // margin 을 주어 루트 요소의 범위를 확장할 수 있습니다. 즉 확장된 영역 안에 타겟 요소가 들어가면 가시성에 변화가 생깁니다.
+        // CSS 의 margin 과 유사하게 top, right, bottom, left 의 margin 정도롤 각각 설정할 수 있습니다.
+        // 기본 값은 0이며 따로 설정 시 단위를 꼭 입력해야합니다.
+        threshold: 0.5,
+        //콜백이 실행될 타겟 요소의 가시성 퍼센티지를 나타내는 단일 숫자 및 숫자 배열이 들어갈 수 있습니다.
+        // 즉, 요소의 top, bottom 이 노출된 순간만 콜백을 실행할 수 있는 것이 아니라 어느정도 타겟 요소가 보여졌는 지에 따라서도 콜백을 호출할 수 있습니다.
+        // 예를 들어 요소가 50%만큼 보여졌을 때 탐지하고 싶다면 단일 숫자 값 0.5 를 설정하면 됩니다.
+        // 은 25% 단위로 가시성이 변경될 때마다 콜백이 실행되게 하고 싶다면 [0, 0.25, 0.5, 0.75, 1] 을 설정하면 됩니다.
+        // 지금은 스크롤을 하면서 불러올것이기 때문에 0.5정도로 설정해두겠습니다.
+      };
+
+      //  console.log(options);
+      let observer = new IntersectionObserver(callback, options);
+
+      let target = document.querySelector("#listItem");
+      observer.observe(target);
+
+      let callback = (entries, observer) => {
+        entries.foreEach((entry) => {
+          if (entry.intersectionRatio <= 0) return;
+        });
+      };
+  */
   return (
     <Layout>
       <header>
@@ -57,10 +86,24 @@ const InfiniteScroll = () => {
       <aside>
         <h2>기술 선택 이유</h2>
         <h3>- IntersectionObserver API</h3>
-        <div>
-          인터섹션 api는 디바운스, 쓰로틀을 사용하지 않아도 되고, reflow현상이
-          발견되지 않기 때문에 해당 api를 사용해서 구현합니다.
-        </div>
+        <ul>
+          <li>
+            인터섹션 api는 디바운스, 쓰로틀을 사용하지 않아도 되고, reflow현상이
+            발견되지 않기 때문에 해당 api를 사용해서 구현합니다.
+          </li>
+          <li>
+            Intersection Observer API는 타겟 요소와 상위 요소 또는 최상위
+            document 의 viewport 사이의 intersection 내의 변화를 비동기적으로
+            관찰하는 방법입니다.
+          </li>
+          <li>
+            Intersection Observer API 는 루트 요소와 타겟 요소의 교차점을
+            관찰합니다. 그리고 타겟 요소가 루트 요소와 교차하는지 아닌지를
+            구별하는 기능을 제공하고 있습니다. scroll 이벤트와 다르게 교차 시
+            비동기적으로 실행되며 가시성 구분 시 reflow 를 발생시키지 않습니다.
+            여러모로 성능상 유리합니다.
+          </li>
+        </ul>
       </aside>
       <h1>InfiniteScroll Example</h1>
       <MovieLayout>
