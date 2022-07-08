@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import InfiniteScroll from "./InfiniteScroll/InfiniteScroll";
 import Pagenation from "./Pagenation/Pagenation";
 import ReactJs from "./ReactJs";
-import Redux from "./Redux";
+import Redux from "./Redux/Redux";
 
 const App = () => {
   return (
